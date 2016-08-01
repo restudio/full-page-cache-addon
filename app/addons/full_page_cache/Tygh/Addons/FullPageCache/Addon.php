@@ -57,6 +57,11 @@ final class Addon
     protected $page_cache_tags = array();
 
     /**
+     * @var is using LiteSpeed Cache.
+     */
+    protected $is_lscache = 1;
+    
+    /**
      * Addon constructor.
      *
      * @param \Tygh\Application $app
@@ -66,6 +71,10 @@ final class Addon
     {
         $this->app = $app;
         $this->setSettings($settings);
+        
+        if ($this->is_lscache) {
+            $this->cache_tags_http_header_name = "X-LiteSpeed-Tag";
+        }
     }
 
     /**
@@ -185,7 +194,7 @@ final class Addon
             );
         }
 
-        if (!$this->checkConnectionToVarnishAdm()) {
+        if (!$this->is_lscache && !$this->checkConnectionToVarnishAdm()) {
             $result = false;
             fn_set_notification(
                 'E',
@@ -239,6 +248,9 @@ final class Addon
      */
     public function onAddonEnable()
     {
+        if ($this->is_lscache) {
+            return;
+        }
         $this->regenerateEnablingVCLFile();
         $this->useEnablingVCLFile();
         $this->sendNotificationsOnEnable();
@@ -274,6 +286,9 @@ final class Addon
      */
     public function onAddonDisable()
     {
+        if ($this->is_lscache){
+            return;
+        }
         $this->useDisablingVCLFile();
     }
 
@@ -390,6 +405,11 @@ final class Addon
     public function invalidateByTags(array $tags)
     {
         if (!empty($tags)) {
+            if ($this->is_lscache) {
+                $tags = implode(', tag=', $tags);
+                header( "X-LiteSpeed-Purge: tag=". $tags );
+                return;
+            }
             $this->getVarnishAdmInstance()->ban(
                 $this->buildBanByTagsRegexp($tags)
             );
