@@ -1,11 +1,14 @@
 # LiteSpeed caching addon for CS-Cart (BETA)
 
-
-## Installation
+## Important notes
 
 * This addon is still in beta and under active development.
 
 * This addon has been tested with CSCart 4.11.2. It should work on both older and newer versions, but you may run into some issues.
+
+* This addon requires the use of ESI. OpenLiteSpeed does not support ESI at this time.
+
+## Installation
 
 ### Configuring LiteSpeed Web Server
 
@@ -39,9 +42,21 @@ cat full-page-cache-addon/htaccess_lscache >> /your/cscart/installation/.htacces
 
 1. Navigate to `Add-ons -> Manage add-ons` at the right top of the CSCart admin panel.
 
-2. 
+2. Scroll down to the `Full-page cache` add-on and click `Install`.
+
+3. Scroll down to the `Full-page cache` add-on again, click `Disabled` and change it to `Active`.
 
 *For more information, please refer to the "CSCart Manage Add-ons" screenshot at the bottom.*
+
+### Testing
+
+After following the steps above, check the response headers of your requests to CSCart. You should see this in the initial request:
+
+`X-LiteSpeed-Cache: miss`
+
+And after you refresh, it should change to a hit:
+
+`X-LiteSpeed-Cache: hit`
 
 ## Support
 
@@ -56,3 +71,7 @@ If you find any issues, bugs, or possible improvements - please open an issue on
 ### CSCart Manage Add-ons
 
 ![CSCart Manage Add-ons](https://s.woet.me/OZCWQq8kf7.png)
+
+![CSCart Install Add-on](https://s.woet.me/KwgyYktCfQ.png)
+
+![CSCart Activate Add-on](https://s.woet.me/Yn7QgiDMo3.png)
