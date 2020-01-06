@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <addon scheme="3.0">
     <id>full_page_cache_unmanaged</id>
-    <version>0.0.8</version>
+    <version>0.0.9</version>
     <priority>10000</priority>
     <status>disabled</status>
     <unmanaged/>

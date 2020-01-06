@@ -9,8 +9,8 @@ msgid "Full-page cache"
 msgstr "Full-page cache"
 
 msgctxt "Addons::description::full_page_cache"
-msgid "Adds an ability to use full-page cache using Varnish."
-msgstr "Adds an ability to use full-page cache using Varnish."
+msgid "Full-page caching using the LiteSpeed Web Server."
+msgstr "Full-page caching using the LiteSpeed Web Server."
 
 msgctxt "Languages::full_page_cache.unable_to_enable_full_page_caching"
 msgid "Unable to enable full-page caching."
@@ -39,6 +39,18 @@ msgstr "Full-page caching will only work for <b>\"[storefront]\"</b> storefront.
 msgctxt "Languages::full_page_cache.warning_vcl_regeneration_required"
 msgid "Varnish configuration file must be regenerated because you have changed caching-related settings. Please, disable and enable the \"Full-page cache\" add-on in order to your storefront work correctly."
 msgstr "Varnish configuration file must be regenerated because you have changed caching-related settings. Please, disable and enable the \"Full-page cache\" add-on in order to your storefront work correctly."
+
+msgctxt "SettingsOptions::full_page_cache::litespeed"
+msgid "LiteSpeed"
+msgstr "LiteSpeed"
+
+msgctxt "SettingsOptions::full_page_cache::litespeed_public_ttl"
+msgid "Public cache TTL, in seconds"
+msgstr "Public cache TTL, in seconds"
+
+msgctxt "SettingsOptions::full_page_cache::litespeed_private_ttl"
+msgid "Private cache TTL, in seconds"
+msgstr "Private cache TTL, in seconds"
 
 msgctxt "SettingsOptions::full_page_cache::varnish"
 msgid "Varnish"
