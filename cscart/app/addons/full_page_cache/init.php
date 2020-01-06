@@ -15,6 +15,8 @@
 fn_register_hooks(
     'render_block_pre',
     'render_block_post',
+    'smarty_block_hook_post',
+    'init_templater_post',
     'dispatch_before_send_response',
     'registry_save_pre',
     'register_cache',

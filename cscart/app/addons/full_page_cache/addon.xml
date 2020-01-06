@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <addon scheme="3.0">
     <id>full_page_cache</id>
-    <version>0.0.8</version>
+    <version>0.0.9</version>
     <priority>10000</priority>
     <status>disabled</status>
     <default_language>en</default_language>
@@ -9,7 +9,6 @@
     <compatibility>
         <core_version>
             <min>4.3.6</min>
-            <max>4.3.7</max>
         </core_version>
         <core_edition>ULTIMATE</core_edition>
     </compatibility>
@@ -18,25 +17,16 @@
         <sections>
             <section id="general">
                 <items>
-                    <item id="varnish">
+                    <item id="litespeed">
                         <type>header</type>
                     </item>
-                    <item id="varnish_host">
+                    <item id="litespeed_public_ttl">
                         <type>input</type>
-                        <default_value>127.0.0.1</default_value>
+                        <default_value>28800</default_value>
                     </item>
-                    <item id="varnish_adm_port">
+                    <item id="litespeed_private_ttl">
                         <type>input</type>
-                        <default_value>6082</default_value>
-                    </item>
-                    <item id="varnish_adm_secret">
-                        <type>input</type>
-                    </item>
-                    <item id="common">
-                        <type>header</type>
-                    </item>
-                    <item id="marketplace_license_number">
-                        <type>input</type>
+                        <default_value>1800</default_value>
                     </item>
                 </items>
             </section>
@@ -50,6 +40,5 @@
 
     <files>
         <file>esi.php</file>
-        <file>var/conf/varnish</file>
     </files>
 </addon>

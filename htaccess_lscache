@@ -1,12 +1,15 @@
 
-<IfModule LiteSpeed>
-RewriteEngine on
-RewriteCond %{REQUEST_URI}   !(esi\.php|api\.php|admin\.php|cart/|checkout/|checkout\-customer\-info/|checkout\-summary/|orders/|compare/|wishlist/)
-RewriteCond %{QUERY_STRING}  !dispatch=(checkout\..+|orders\..+|wishlist\..+|product_features\.add_product|product_features\.clear_list|product_features\.delete_product|product_features\.delete_feature|product_features\.compare)
-RewriteCond %{HTTP_COOKIE}   !disable_cache=Y
-RewriteRule .* - [E=cache-control:max-age=900]
 
-RewriteCond %{REQUEST_URI}   !esi\.php
-RewriteCond %{HTTP_COOKIE}   fpc_sid_customer_4e5a7
-RewriteRule .* - [E=HTTP_X_HAS_SESSION:true,E=cache-control:vary=hassession,E=esi_on:1]
+# Full-page cache add-on
+<IfModule LiteSpeed>
+	RewriteEngine on
+	CacheLookup on
+	RewriteCond %{REQUEST_URI}   !(esi\.php|api\.php|admin\.php|cart/|checkout/|checkout\-customer\-info/|checkout\-summary/|orders/|compare/|wishlist/)
+	RewriteCond %{QUERY_STRING}  !dispatch=(checkout\..+|orders\..+|wishlist\..+|product_features\.add_product|product_features\.clear_list|product_features\.delete_product|product_features\.delete_feature|product_features\.compare)
+	RewriteCond %{HTTP_COOKIE}   !disable_cache=Y
+	RewriteRule .* - [E=cache-control:max-age=900,E=esi_on:1]
+
+	RewriteCond %{REQUEST_URI}   !esi\.php
+	RewriteCond %{HTTP_COOKIE}   sid_customer_
+	RewriteRule .* - [E=HTTP_X_HAS_SESSION:true,E=cache-control:vary=hassession,E=esi_on:1]
 </IfModule>

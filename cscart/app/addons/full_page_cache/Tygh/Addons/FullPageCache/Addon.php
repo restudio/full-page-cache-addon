@@ -174,7 +174,7 @@ final class Addon
     {
         $result = true;
 
-        if (!is_dir($this->varnish_vcl_directory) || !is_writable($this->varnish_vcl_directory)) {
+        if (!$this->is_lscache && (!is_dir($this->varnish_vcl_directory) || !is_writable($this->varnish_vcl_directory))) {
             $result = false;
             fn_set_notification(
                 'E',
@@ -387,6 +387,40 @@ final class Addon
         return $return;
     }
 
+    public function renderESIForCSRF($content){
+        // Define the URL and tag
+        $csrf_url = sprintf(
+            '%s/esi.php?csrf=true',
+            rtrim($root_url, '\\/')
+        );
+
+        $csrf_tag = '<esi:include src="'.$csrf_url.'" />';
+        $csrf_tag .= '<esi:remove>'.fn_generate_security_hash().'</esi:remove>';
+
+        // Get rid of original fields
+        $content = preg_replace(
+            '/<input type="hidden" name="security_hash".*?>/i', 
+            '', 
+            $content
+        );
+        
+        // Replace HTML tags
+        $content = str_replace(
+            '</form>', 
+            '<input type="hidden" name="security_hash" class="cm-no-hide-input" value="'.$csrf_tag .'" /></form>', 
+            $content
+        );
+
+        // Replace HTML script
+        $content = preg_replace(
+            "~_.security_hash = '(.*?)';~", 
+            "_.security_hash = '".$csrf_tag."';", 
+            $content
+        );
+
+        return $content;
+    }
+
     /**
      * Invalidates all Varnish cache records that are marked with given tag.
      *
@@ -406,9 +440,11 @@ final class Addon
     {
         if (!empty($tags)) {
             if ($this->is_lscache) {
-                $tags = implode(', tag=', $tags);
-                header( "X-LiteSpeed-Purge: tag=". $tags );
-                return;
+                if (!headers_sent()) {
+                    $tags = implode(', tag=', $tags);
+                    header( "X-LiteSpeed-Purge: tag=". $tags );
+                    return;
+                }
             }
             $this->getVarnishAdmInstance()->ban(
                 $this->buildBanByTagsRegexp($tags)
