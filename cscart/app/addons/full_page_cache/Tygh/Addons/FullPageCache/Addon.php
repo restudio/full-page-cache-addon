@@ -395,6 +395,7 @@ final class Addon
         );
 
         $csrf_tag = '<esi:include src="'.$csrf_url.'" />';
+        $csrf_tag .= '<esi:remove>'.fn_generate_security_hash().'</esi:remove>';
 
         // Get rid of original fields
         $content = preg_replace(
@@ -420,10 +421,6 @@ final class Addon
         return $content;
     }
 
-    public function getESItag($url, $default = ''){
-        return '<esi:include src="'.$url.'" /><esi:remove>%s</esi:remove>';
-    }
-
     /**
      * Invalidates all Varnish cache records that are marked with given tag.
      *
@@ -443,9 +440,11 @@ final class Addon
     {
         if (!empty($tags)) {
             if ($this->is_lscache) {
-                $tags = implode(', tag=', $tags);
-                header( "X-LiteSpeed-Purge: tag=". $tags );
-                return;
+                if (!headers_sent()) {
+                    $tags = implode(', tag=', $tags);
+                    header( "X-LiteSpeed-Purge: tag=". $tags );
+                    return;
+                }
             }
             $this->getVarnishAdmInstance()->ban(
                 $this->buildBanByTagsRegexp($tags)
