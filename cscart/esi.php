@@ -29,6 +29,8 @@ if (isset($_SERVER['SCRIPT_FILENAME']) && dirname($_SERVER['SCRIPT_FILENAME']) !
 if(isset($_REQUEST['csrf'])){
     require_once $root_dir . '/init.php';
 
+    header('X-LiteSpeed-Cache-Control: private,max-age=3600');
+
     die(fn_generate_security_hash());
 }
 
