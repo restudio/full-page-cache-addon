@@ -1,3 +1,6 @@
+
+
+# Full-page cache add-on
 <IfModule LiteSpeed>
 	RewriteEngine on
 	RewriteCond %{REQUEST_URI}   !(esi\.php|api\.php|admin\.php|cart/|checkout/|checkout\-customer\-info/|checkout\-summary/|orders/|compare/|wishlist/)
