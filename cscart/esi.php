@@ -26,6 +26,11 @@ if (isset($_SERVER['SCRIPT_FILENAME']) && dirname($_SERVER['SCRIPT_FILENAME']) !
     $root_dir = dirname($_SERVER['SCRIPT_FILENAME']);
 }
 
+if(isset($_REQUEST['csrf'])){
+    require_once $root_dir . '/init.php';
+
+    die(fn_generate_security_hash());
+}
 
 if (isset($_REQUEST['block_id'],
     $_REQUEST['snapping_id'],

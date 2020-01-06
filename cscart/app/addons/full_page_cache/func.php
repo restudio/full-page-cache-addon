@@ -71,6 +71,18 @@ function fn_full_page_cache_render_block_pre($block, $block_schema, &$params, &$
     }
 }
 
+function fn_full_page_cache_init_templater_post(&$view){
+    $view->unregisterFilter('output', array('Tygh\SmartyEngine\Filters', 'outputSecurityHash'));
+}
+
+function fn_full_page_cache_smarty_block_hook_post($params, $content, $overrides, $smarty, &$hook_content){      
+    if($params['name'] == 'index:body'){
+        $addon = Tygh::$app['addons.full_page_cache'];
+
+        $hook_content = $addon->renderESIForCSRF($hook_content);
+    }
+}
+
 /**
  * Hook is used to wrap block contents with ESI directive if this is needed.
  *
@@ -252,6 +264,8 @@ function fn_full_page_cache_notify_about_vcl_regeneration_requirement()
  */
 function fn_full_page_cache_is_vcl_regeneration_required()
 {
+    return false;
+    
     return fn_get_storage_data('full_page_cache__vcl_regeneration_required') == 'Y';
 }
 
