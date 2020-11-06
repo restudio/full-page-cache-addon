@@ -30,7 +30,7 @@ git clone https://github.com/litespeedtech/full-page-cache-addon
 
 2. Move the contents of `cscart/*` to your CSCart installation
 ```
-mv full-page-cache-addon/cscart/* /your/cscart/installation/
+rsync -a full-page-cache-addon/cscart/ /your/cscart/installation/
 ```
 
 3. Append the contents of `htaccess_lscache` to your `.htaccess`
